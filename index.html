@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TestWebGL</title>
+	
+	<style>
+		body{
+			margin:0;
+		}
+	</style>
+</head>
+<body onload = "start()">
+	<canvas id = "canvas" width = "500" height = "500"></canvas>
+	
+	<script>
+		var gl, canvas, program;
+
+		function start(){
+			canvas = document.getElementById("canvas");
+			canvas.width = 600;
+			canvas.height = 600;
+
+			gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+
+			gl.viewport(0, 0, canvas.width, canvas.height);
+			gl.clearColor(0.28, 0.20, 0.5, 1.0);
+			gl.enable(gl.DEPTH_TEST);
+			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+			initShaders();
+			initBuffers();
+		}
+
+		function initShaders(){
+			var v = document.getElementById("vshader").firstChild.nodeValue;
+			var f = document.getElementById("fshader").firstChild.nodeValue;
+
+			var vs = gl.createShader(gl.VERTEX_SHADER);
+			gl.shaderSource(vs, v);
+			gl.compileShader(vs);
+
+			var fs = gl.createShader(gl.FRAGMENT_SHADER);
+			gl.shaderSource(fs, f);
+			gl.compileShader(fs);
+
+			program = gl.createProgram();
+			gl.attachShader(program, vs);
+			gl.attachShader(program, fs);
+			gl.linkProgram(program);
+		}
+
+		function initBuffers(){
+			var vertices = [
+				-0.4, 0.5, 
+				-0.4, 0.4,
+				-0.5, 0.4,
+			];
+		
+			var colors = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+
+			var colorBuffer = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+
+			var buffer = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+			
+			gl.useProgram(program);
+			//program.uColor = gl.getUniformLocation(program, "uColor");
+			//gl.uniform4fv(program.uColor, [0.0, 1.0, 0.0, 1.0]);
+
+			program.aVertexPosition = gl.getAttribLocation(program, "aVposition");
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			vColorAttrib = gl.getAttribLocation(program, "aVcolor");
+			gl.enableVertexAttribArray(vColorAttrib);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+
+			///////
+
+			var vertices2 = [
+				-0.4, 0.4,
+				-0.4, 0.3,
+				-0.5, 0.4
+			];
+			var colors2 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer2 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices2), gl.STATIC_DRAW);
+
+			var colorBuffer2 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer2);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors2), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer2);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRA_BUFFER, buffer2);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+
+			//////
+
+			var vertices3 = [
+				-0.5, 0.4,
+				-0.5, 0.3,
+				-0.4, 0.3
+			];
+			var colors3 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer3 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer3);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices3), gl.STATIC_DRAW);
+
+			var colorBuffer3 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer3);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors3), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer3);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer3);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRA_BUFFER, buffer3);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+
+			/////////////////////
+
+
+			var vertices4 = [
+				-0.5, 0.3,
+				-0.4, 0.3,
+				-0.4, 0.2
+			];
+			var colors4 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer4 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer4);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices4), gl.STATIC_DRAW);
+
+			var colorBuffer4 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer4);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors4), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer4);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer4);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer4);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////////////
+
+			var vertices5 = [
+				-0.4, 0.3,
+				-0.4, 0.2,
+				-0.3, 0.2
+			];
+			var colors5 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer5 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer5);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices5), gl.STATIC_DRAW);
+
+			var colorBuffer5 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer5);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors5), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer5);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer5);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer5);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			/////////////////
+
+
+			var vertices6 = [
+				-0.4, 0.2,
+				-0.3, 0.2,
+				-0.3, 0.1
+			];
+			var colors6 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer6 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer6);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices6), gl.STATIC_DRAW);
+
+			var colorBuffer6 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer6);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors6), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer6);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer6);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer6);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+
+			/////////////////
+
+			var vertices7 = [
+				-0.3, 0.1,
+				-0.2, 0.1,
+				-0.2, 0.0
+			];
+			var colors7 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer7 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer7);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices7), gl.STATIC_DRAW);
+
+			var colorBuffer7 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer7);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors7), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer7);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer7);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer7);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////////////
+
+			var vertices8 = [
+				-0.4, 0.5,
+				-0.4, 0.4,
+				-0.3, 0.4
+			];
+			var colors8 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer8 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer8);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices8), gl.STATIC_DRAW);
+
+			var colorBuffer8 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer8);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors8), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer8);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer8);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer8);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////////
+
+			var vertices9 = [
+				-0.4, 0.4,
+				-0.4, 0.3,
+				-0.3, 0.4
+			];
+			var colors9 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer9 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer9);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices9), gl.STATIC_DRAW);
+
+			var colorBuffer9 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer9);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors9), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer9);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer9);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer9);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+
+			//////////
+
+			var vertices10 = [
+				-0.4, 0.3,
+				-0.3, 0.4,
+				-0.3, 0.3
+			];
+			var colors10 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer10 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer10);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices10), gl.STATIC_DRAW);
+
+			var colorBuffer10 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer10);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors10), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer10);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer10);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer10);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////
+
+			var vertices11 = [
+				-0.4, 0.3,
+				-0.3, 0.4,
+				-0.3, 0.2
+			];
+			var colors11 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer11 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer11);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices11), gl.STATIC_DRAW);
+
+			var colorBuffer11 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer11);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors11), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer11);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer11);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer11);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			////////
+
+			var vertices12 = [
+				-0.3, 0.2,
+				-0.3, 0.1,
+				-0.2, 0.1
+			];
+			var colors12 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer12 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer12);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices12), gl.STATIC_DRAW);
+
+			var colorBuffer12 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer12);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors12), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer12);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer12);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer12);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			////////////
+
+			var vertices13 = [
+				-0.3, 0.2,
+				-0.2, 0.2,
+				-0.2, 0.1
+			];
+			var colors13 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer13 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer13);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices13), gl.STATIC_DRAW);
+
+			var colorBuffer13 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer13);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors13), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer13);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer13);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer13);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////////////
+
+			var vertices14 = [
+				-0.3, 0.2,
+				-0.3, 0.3,
+				-0.2, 0.2
+			];
+			var colors14 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer14 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer14);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices14), gl.STATIC_DRAW);
+
+			var colorBuffer14 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer14);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors14), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer14);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer14);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer14);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////
+
+			var vertices15 = [
+				-0.3, 0.3,
+				-0.2, 0.3,
+				-0.2, 0.1
+			];
+			var colors15 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer15 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer15);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices15), gl.STATIC_DRAW);
+
+			var colorBuffer15 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer15);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors15), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer15);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer15);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer15);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			/////////////
+
+			var vertices16 = [
+				-0.3, 0.4,
+				-0.3, 0.3,
+				-0.2, 0.3
+			];
+			var colors16 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer16 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer16);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices16), gl.STATIC_DRAW);
+
+			var colorBuffer16 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer16);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors16), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer16);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer16);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer16);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			/////////////
+
+			var vertices17 = [
+				-0.3, 0.4,
+				-0.2, 0.4,
+				-0.2, 0.3
+			];
+			var colors17 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer17 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer17);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices17), gl.STATIC_DRAW);
+
+			var colorBuffer17 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer17);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors17), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer17);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer17);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer17);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////
+
+			var vertices18 = [
+				-0.4, 0.5,
+				-0.3, 0.5,
+				-0.3, 0.4
+			];
+			var colors18 = [
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+				0.17, 0.17, 0.17,
+			];
+			var buffer18 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer18);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices18), gl.STATIC_DRAW);
+
+			var colorBuffer18 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer18);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors18), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer18);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer18);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer18);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////////////
+
+			var vertices19 = [
+				-0.3, 0.5,
+				-0.3, 0.4,
+				-0.2, 0.4
+			];
+			var colors19 = [
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+				0.19, 0.19, 0.19,
+			];
+			var buffer19 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer19);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices19), gl.STATIC_DRAW);
+
+			var colorBuffer19 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer19);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors19), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer19);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer19);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer19);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////////
+			/////////////
+
+			var vertices1a = [
+				 -0.2,  0.4, 
+				 -0.1,  0.5,
+				 -0.1,  0.4,
+			];
+		
+			var colors1a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer1a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer1a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices1a), gl.STATIC_DRAW);
+
+			var colorBuffer1a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer1a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors1a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer1a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer1a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer1a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////////
+			var vertices2a = [
+				 -0.2,  0.4, 
+				 -0.2,  0.3,
+				 -0.1,  0.4,
+			];
+		
+			var colors2a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer2a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer2a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices2a), gl.STATIC_DRAW);
+
+			var colorBuffer2a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer2a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors2a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer2a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer2a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer1a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////
+
+			var vertices3a = [
+				 -0.2,  0.3, 
+				 -0.1,  0.4,
+				 -0.1,  0.3,
+			];
+		
+			var colors3a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer3a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer3a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices3a), gl.STATIC_DRAW);
+
+			var colorBuffer3a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer3a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors3a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer3a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer3a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer3a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			/////////
+
+			var vertices4a = [
+				 -0.2,  0.3, 
+				 -0.2,  0.2,
+				 -0.1,  0.3,
+			];
+		
+			var colors4a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer4a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer4a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices4a), gl.STATIC_DRAW);
+
+			var colorBuffer4a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer4a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors4a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer4a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer4a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer4a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////////
+
+			var vertices5a = [
+				 -0.2,  0.2, 
+				 -0.1,  0.3,
+				 -0.1,  0.2,
+			];
+		
+			var colors5a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer5a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer5a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices5a), gl.STATIC_DRAW);
+
+			var colorBuffer5a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer5a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors5a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer5a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer5a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer5a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////
+
+			var vertices6a = [
+				 -0.2,  0.2, 
+				 -0.2,  0.1,
+				 -0.1,  0.2,
+			];
+		
+			var colors6a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer6a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer6a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices6a), gl.STATIC_DRAW);
+
+			var colorBuffer6a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer6a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors6a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer6a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer6a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer6a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////
+
+			var vertices7a = [
+				 -0.2,  0.1, 
+				 -0.1,  0.2,
+				 -0.1,  0.1,
+			];
+		
+			var colors7a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer7a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer7a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices7a), gl.STATIC_DRAW);
+
+			var colorBuffer7a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer7a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors7a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer7a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer7a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer7a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////////
+
+			var vertices8a = [
+				 -0.2,  0.1, 
+				 -0.1,  0.1,
+				 -0.2,  0.0,
+			];
+		
+			var colors8a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer8a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer8a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices8a), gl.STATIC_DRAW);
+
+			var colorBuffer8a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer8a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors8a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer8a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer8a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer8a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			////////////
+
+			var vertices9a = [
+				  -0.1,  0.1, 
+				  -0.1,  0.2,
+				   0.0,  0.2,
+			];
+		
+			var colors9a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer9a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer9a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices9a), gl.STATIC_DRAW);
+
+			var colorBuffer9a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer9a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors9a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer9a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer9a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer9a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			///////////////
+
+			var vertices10a = [
+				  -0.1,  0.2, 
+				  -0.1,  0.3,
+				   0.0,  0.3,
+			];
+		
+			var colors10a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer10a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer10a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices10a), gl.STATIC_DRAW);
+
+			var colorBuffer10a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer10a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors10a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer10a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer10a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer10a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			/////////
+
+			var vertices11a = [
+				  -0.1,  0.2, 
+				   0.0,  0.2,
+				   0.0,  0.3,
+			];
+		
+			var colors11a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer11a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer11a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices11a), gl.STATIC_DRAW);
+
+			var colorBuffer11a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer11a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors11a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer11a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer11a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer11a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+
+			//////////
+
+			var vertices12a = [
+				   0.0,  0.2, 
+				   0.0,  0.3,
+				   0.1,  0.3,
+			];
+		
+			var colors12a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer12a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer12a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices12a), gl.STATIC_DRAW);
+
+			var colorBuffer12a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer12a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors12a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer12a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer12a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer12a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////////
+
+			var vertices13a = [
+				   0.0,  0.3, 
+				   0.1,  0.3,
+				   0.1,  0.4,
+			];
+		
+			var colors13a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer13a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer13a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices13a), gl.STATIC_DRAW);
+
+			var colorBuffer13a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer13a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors13a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer13a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer13a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer13a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			/////////
+
+			var vertices14a = [
+				   0.0,  0.3, 
+				   0.0,  0.4,
+				   0.1,  0.4,
+			];
+		
+			var colors14a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer14a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer14a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices14a), gl.STATIC_DRAW);
+
+			var colorBuffer14a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer14a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors14a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer14a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer14a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer14a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			/////////////
+
+			var vertices15a = [
+				   0.0,  0.5, 
+				   0.0,  0.4,
+				   0.1,  0.4,
+			];
+		
+			var colors15a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer15a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer15a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices15a), gl.STATIC_DRAW);
+
+			var colorBuffer15a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer15a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors15a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer15a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer15a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer15a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			////////////
+
+			var vertices16a = [
+				   0.0,  0.5, 
+				   0.0,  0.4,
+				   -0.1,  0.5,
+			];
+		
+			var colors16a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer16a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer16a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices16a), gl.STATIC_DRAW);
+
+			var colorBuffer16a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer16a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors16a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer16a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer16a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer16a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			////////////////
+
+			var vertices17a = [
+				   0.0,  0.4, 
+				   -0.1,  0.5,
+				   -0.1,  0.4,
+			];
+		
+			var colors17a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer17a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer17a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices17a), gl.STATIC_DRAW);
+
+			var colorBuffer17a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer17a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors17a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer17a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer17a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer17a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			//////////////
+
+			var vertices18a = [
+				   0.0,  0.4, 
+				   -0.1,  0.5,
+				   -0.1,  0.4,
+			];
+		
+			var colors18a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer18a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer18a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices18a), gl.STATIC_DRAW);
+
+			var colorBuffer18a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer18a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors18a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer18a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer18a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer18a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			////////
+
+			var vertices19a = [
+				   0.0,  0.4, 
+				   -0.1,  0.4,
+				   0.0,  0.3,
+			];
+		
+			var colors19a = [
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+				0.85, 0.85, 0.85,
+			];
+
+			var buffer19a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer19a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices19a), gl.STATIC_DRAW);
+
+			var colorBuffer19a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer19a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors19a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer19a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer19a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer19a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+
+			////////////////
+
+			var vertices20a = [
+				   0.0,  0.3, 
+				   -0.1,  0.3,
+				   -0.1,  0.4,
+			];
+		
+			var colors20a = [
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+				0.92, 0.92, 0.92,
+			];
+
+			var buffer20a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer20a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices20a), gl.STATIC_DRAW);
+
+			var colorBuffer20a = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer20a);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors20a), gl.STATIC_DRAW);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer20a);
+			gl.enableVertexAttribArray(program.aVertexPosition);
+			gl.vertexAttribPointer(program.aVertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer20a);
+			gl.enableVertexAttribArray(vColorAttrib);
+			gl.vertexAttribPointer(vColorAttrib, 3, gl.FLOAT, false, 0 , 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer20a);
+			gl.drawArrays(gl.TRIANGLES, 0 , 3);
+		}
+	</script>
+
+	<script type = "x-shader/x-vertex" id = "vshader" >
+		attribute vec2 aVposition;
+		attribute vec4 aVcolor;
+
+		varying lowp vec4 vColor;
+
+		void main(){
+			gl_Position = vec4(aVposition, 0.0, 1.0);
+			vColor = aVcolor;
+		}
+	</script>
+
+	<script type = "x-shader/x-fragment" id = "fshader">
+		#ifdef GL_ES
+		precision highp float;
+		#endif
+
+		varying lowp vec4 vColor;
+		//uniform vec4 uColor;
+
+		void main(){
+			gl_FragColor = vColor;
+		}
+	</script>
+</body>
+</html>
